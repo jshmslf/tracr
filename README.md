@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tracr
 
-## Getting Started
+Your job application tracker. A personal tool for keeping track of job applications: titles, companies, statuses, salaries, links, and notes, in one place instead of scattered across spreadsheets and browser tabs.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Applications table** with sortable columns, filters (status, company, search), and a status pipeline (Saved → Applied → Interviewing → Offer / Rejected / Withdrawn)
+- **Auto-fill from a link**: paste a job posting URL and Tracr scrapes the title, company, salary, location, and description for you (fast HTML parsing first, falling back to a headless browser for JS-heavy pages)
+- **Rich text descriptions**: paste formatted content from a job posting (bold, italics, bullet/numbered lists, links) and it's preserved, sanitized, and still editable
+- **Salary tracking** with currency and pay-period (hourly/monthly/yearly)
+- **Accounts**: email/password or Google sign-in, with the option to set/change a password, a "Connected devices" list for the browser extension, and self-service account deletion
+- **Light/dark theme**, saved per account
+- **Browser extension**: add an application without leaving the job posting tab — see below
+
+## Tech stack
+
+- [Next.js](https://nextjs.org) (App Router) + React + TypeScript
+- [Drizzle ORM](https://orm.drizzle.team) + Postgres ([Neon](https://neon.tech))
+- [better-auth](https://www.better-auth.com) for authentication (email/password + Google OAuth)
+- [shadcn/ui](https://ui.shadcn.com) + Tailwind CSS
+- [TipTap](https://tiptap.dev) for the rich text description editor
+- [cheerio](https://cheerio.js.org) + [Playwright](https://playwright.dev) for scraping (fast path + headless fallback)
+- [Font Awesome](https://fontawesome.com) for icons
+
+## Getting started
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Copy `.env.example` to `.env` and fill in the values:
+   ```
+   DATABASE_URL=          # Postgres connection string (e.g. from Neon)
+   BETTER_AUTH_SECRET=    # random string, e.g. `openssl rand -hex 32`
+   BETTER_AUTH_URL=http://localhost:3000
+   GOOGLE_CLIENT_ID=      # optional, enables Google sign-in
+   GOOGLE_CLIENT_SECRET=  # optional, enables Google sign-in
+   ```
+3. Push the database schema:
+   ```bash
+   npm run db:push
+   ```
+4. Run the dev server:
+   ```bash
+   npm run dev
+   ```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Browser extension
+
+Tracr has a companion browser extension (Chrome/Edge) that lets you add an application from any job posting tab without switching to the website, using a one-time 12-word phrase to connect it to your account (generated from your Profile page).
+
+Source: **[tracr-extension](https://github.com/your-username/tracr-extension)** *(update this link once the repo is pushed to GitHub)*
+
+## Project structure
+
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+app/                Next.js App Router routes (pages, API routes, server actions)
+components/          UI components (shadcn primitives in components/ui, feature components grouped by area)
+lib/                 Database client/schema, auth config, scraping, validation, shared helpers
+```
