@@ -51,7 +51,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 Tracr has a companion browser extension (Chrome/Edge) that lets you add an application from any job posting tab without switching to the website, using a one-time 12-word phrase to connect it to your account (generated from your Profile page).
 
-Source: **[tracr-extension](https://github.com/your-username/tracr-extension)** *(update this link once the repo is pushed to GitHub)*
+Source: **[tracr-extension](https://github.com/jshmslf/tracr-extension)**
 
 ## Project structure
 
