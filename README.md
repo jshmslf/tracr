@@ -47,11 +47,21 @@ Your job application tracker. A personal tool for keeping track of job applicati
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## Live app
+
+[https://tracr-web.vercel.app/](https://tracr-web.vercel.app/)
+
 ## Browser extension
 
 Tracr has a companion browser extension (Chrome/Edge) that lets you add an application from any job posting tab without switching to the website, using a one-time 12-word phrase to connect it to your account (generated from your Profile page).
 
-Source: **[tracr-extension](https://github.com/jshmslf/tracr-extension)**
+It isn't published on the Chrome Web Store (that requires a paid developer registration), so it's a quick self-install instead:
+
+1. Get the extension: **[tracr-extension](https://github.com/jshmslf/tracr-extension)**
+2. Open `chrome://extensions` (or `edge://extensions`), enable Developer mode, click "Load unpacked," and select the downloaded folder.
+3. In Tracr, go to Profile → "Browser extension" → "Connect a device" to get a 12-word phrase, then paste it into the extension popup.
+
+Full instructions are in the extension repo's README.
 
 ## Project structure
 
