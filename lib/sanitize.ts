@@ -1,4 +1,4 @@
-import DOMPurify from "isomorphic-dompurify";
+import sanitizeHtml from "sanitize-html";
 
 const ALLOWED_TAGS = [
   "p",
@@ -18,11 +18,13 @@ const ALLOWED_TAGS = [
 ];
 
 export function sanitizeDescriptionHtml(html: string): string {
-  const clean = DOMPurify.sanitize(html, {
-    ALLOWED_TAGS,
-    ALLOWED_ATTR: ["href"],
+  return sanitizeHtml(html, {
+    allowedTags: ALLOWED_TAGS,
+    allowedAttributes: { a: ["href", "target", "rel"] },
+    transformTags: {
+      a: sanitizeHtml.simpleTransform("a", { target: "_blank", rel: "noopener noreferrer" }),
+    },
   });
-  return clean.replace(/<a /g, '<a target="_blank" rel="noopener noreferrer" ');
 }
 
 export function looksLikeHtml(value: string): boolean {
