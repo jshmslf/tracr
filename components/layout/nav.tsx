@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { faBriefcase, faUser, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faBriefcase, faUser, faRightFromBracket, faGauge } from "@fortawesome/free-solid-svg-icons";
 import { Icon } from "@/components/icons/icon";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
@@ -20,6 +20,7 @@ export function Nav() {
   }
 
   const links = [
+    { href: "/dashboard", label: "Dashboard", icon: faGauge },
     { href: "/applications", label: "Applications", icon: faBriefcase },
     { href: "/profile", label: "Profile", icon: faUser },
   ];
@@ -27,7 +28,7 @@ export function Nav() {
   return (
     <header className="border-b border-border">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link href="/applications" className="font-semibold">
+        <Link href="/dashboard" className="font-semibold">
           Tracr
         </Link>
         <nav className="flex items-center gap-1">

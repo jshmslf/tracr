@@ -44,7 +44,17 @@ export const columns: ColumnDef<Application>[] = [
   {
     id: "salary",
     header: "Salary",
-    cell: ({ row }) => <span className="text-muted-foreground">{formatSalary(row.original)}</span>,
+    cell: ({ row }) => {
+      const text = formatSalary(row.original);
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className="block max-w-[140px] truncate text-muted-foreground">{text}</span>
+          </TooltipTrigger>
+          <TooltipContent>{text}</TooltipContent>
+        </Tooltip>
+      );
+    },
   },
   {
     accessorKey: "location",

@@ -1,4 +1,4 @@
-import { and, count, desc, eq, ilike } from "drizzle-orm";
+import { and, count, desc, eq, ilike, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { account, applications, profile } from "@/lib/db/schema";
 import type { ApplicationStatus } from "@/lib/types";
@@ -37,6 +37,26 @@ export async function getApplication(userId: string, id: string) {
     .limit(1);
 
   return rows[0] ?? null;
+}
+
+export async function getApplicationStats(userId: string) {
+  const rows = await db
+    .select({
+      total: count(),
+      applied: sql<number>`count(*) filter (where ${applications.status} = 'applied')`,
+      interviewing: sql<number>`count(*) filter (where ${applications.status} = 'interviewing')`,
+      rejected: sql<number>`count(*) filter (where ${applications.status} = 'rejected')`,
+    })
+    .from(applications)
+    .where(eq(applications.userId, userId));
+
+  const row = rows[0];
+  return {
+    total: Number(row?.total ?? 0),
+    applied: Number(row?.applied ?? 0),
+    interviewing: Number(row?.interviewing ?? 0),
+    rejected: Number(row?.rejected ?? 0),
+  };
 }
 
 export async function countApplications(userId: string) {

@@ -50,7 +50,7 @@ export default async function ApplicationsPage({
 
       <Filters />
 
-      <DataTable columns={columns} data={apps} basePath="/applications" />
+      <DataTable columns={columns} data={apps} basePath="/applications" pageSize={10} />
     </div>
   );
 }

@@ -25,5 +25,7 @@ export function formatSalary(
 
 export function formatDate(date: Date | string | null | undefined) {
   if (!date) return null;
-  return format(new Date(date), "MMM d, yyyy");
+  const d = new Date(date);
+  const isCurrentYear = d.getFullYear() === new Date().getFullYear();
+  return format(d, isCurrentYear ? "MMM d" : "MMM d, yyyy");
 }
