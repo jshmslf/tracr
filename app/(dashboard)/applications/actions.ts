@@ -5,8 +5,9 @@ import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { applications } from "@/lib/db/schema";
+import { applications, applicationStatusValues } from "@/lib/db/schema";
 import { applicationSchema, scrapeUrlSchema } from "@/lib/validation";
+import type { ApplicationStatus } from "@/lib/types";
 import { scrapeJobPostingWithFallback } from "@/lib/scrape";
 import { createApplicationRecord, buildApplicationValues } from "@/lib/applications";
 import type { ScrapeResult } from "@/lib/types";
@@ -39,6 +40,20 @@ export async function updateApplication(id: string, input: unknown) {
     .where(and(eq(applications.id, id), eq(applications.userId, userId)));
 
   revalidatePath("/applications");
+}
+
+export async function updateApplicationStatus(id: string, status: ApplicationStatus) {
+  const userId = await requireUserId();
+  if (!applicationStatusValues.includes(status)) throw new Error("Invalid status");
+
+  await db
+    .update(applications)
+    .set({ status, updatedAt: new Date() })
+    .where(and(eq(applications.id, id), eq(applications.userId, userId)));
+
+  revalidatePath(`/applications/${id}`);
+  revalidatePath("/applications");
+  revalidatePath("/dashboard");
 }
 
 export async function deleteApplication(id: string) {

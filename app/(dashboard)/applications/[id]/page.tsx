@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Icon } from "@/components/icons/icon";
-import { StatusBadge } from "@/components/applications/status-badge";
+import { StatusSelect } from "@/components/applications/status-select";
 import { ApplicationDeleteButton } from "@/components/applications/application-delete-button";
 import type { ApplicationStatus } from "@/lib/types";
 
@@ -62,7 +62,7 @@ export default async function ApplicationDetailPage({
               <p className="text-muted-foreground">{application.companyName}</p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <StatusBadge status={application.status as ApplicationStatus} />
+              <StatusSelect id={application.id} status={application.status as ApplicationStatus} />
               <Badge variant="outline" className="gap-1.5 border-transparent bg-secondary text-secondary-foreground">
                 <Icon icon={source.icon} className="size-3" />
                 {source.label}
