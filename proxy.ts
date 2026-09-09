@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
 
-const protectedPaths = ["/applications", "/profile"];
+const protectedPaths = ["/dashboard", "/applications", "/profile"];
 
 export function proxy(request: NextRequest) {
   const sessionCookie = getSessionCookie(request);
@@ -14,12 +14,12 @@ export function proxy(request: NextRequest) {
   }
 
   if ((pathname === "/login" || pathname === "/signup") && sessionCookie) {
-    return NextResponse.redirect(new URL("/applications", request.url));
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/applications/:path*", "/profile/:path*", "/login", "/signup"],
+  matcher: ["/dashboard/:path*", "/applications/:path*", "/profile/:path*", "/login", "/signup"],
 };

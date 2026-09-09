@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getApplication } from "@/lib/db/queries";
 import { ApplicationForm } from "@/components/applications/application-form";
@@ -11,7 +11,8 @@ export default async function EditApplicationPage({
 }) {
   const { id } = await params;
   const session = await auth.api.getSession({ headers: await headers() });
-  const application = await getApplication(session!.user.id, id);
+  if (!session) redirect("/login");
+  const application = await getApplication(session.user.id, id);
 
   if (!application) notFound();
 

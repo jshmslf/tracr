@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { headers } from "next/headers";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   faArrowLeft,
   faPen,
@@ -33,7 +33,8 @@ export default async function ApplicationDetailPage({
 }) {
   const { id } = await params;
   const session = await auth.api.getSession({ headers: await headers() });
-  const application = await getApplication(session!.user.id, id);
+  if (!session) redirect("/login");
+  const application = await getApplication(session.user.id, id);
 
   if (!application) notFound();
 

@@ -41,7 +41,13 @@ export default async function RootLayout({
       className={cn("h-full", "antialiased", "font-sans", inter.variable)}
     >
       <body className="min-h-full flex flex-col">
-        <ThemeProvider attribute="class" defaultTheme={savedTheme} enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme={savedTheme}
+          enableSystem
+          disableTransitionOnChange
+          scriptProps={{ type: "application/javascript" }}
+        >
           <TooltipProvider>
             {children}
             <Footer />

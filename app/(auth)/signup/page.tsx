@@ -37,14 +37,14 @@ export default function SignupPage() {
     }
 
     toast.success("Account created.");
-    router.push("/applications");
+    router.push("/dashboard");
     router.refresh();
   }
 
   async function handleGoogleSignIn() {
     setGoogleLoading(true);
     try {
-      await authClient.signIn.social({ provider: "google", callbackURL: "/applications" });
+      await authClient.signIn.social({ provider: "google", callbackURL: "/dashboard" });
     } catch {
       toast.error("Could not start Google sign-in.");
       setGoogleLoading(false);

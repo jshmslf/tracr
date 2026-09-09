@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import {
   faBriefcase,
@@ -24,7 +25,8 @@ type SearchParams = Promise<{ status?: string; company?: string; search?: string
 
 export default async function DashboardPage({ searchParams }: { searchParams: SearchParams }) {
   const session = await auth.api.getSession({ headers: await headers() });
-  const userId = session!.user.id;
+  if (!session) redirect("/login");
+  const userId = session.user.id;
   const params = await searchParams;
 
   const status = applicationStatusValues.includes(params.status as ApplicationStatus)

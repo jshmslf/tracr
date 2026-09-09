@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { auth } from "@/lib/auth";
@@ -19,13 +20,14 @@ export default async function ApplicationsPage({
   searchParams: SearchParams;
 }) {
   const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) redirect("/login");
   const params = await searchParams;
 
   const status = applicationStatusValues.includes(params.status as ApplicationStatus)
     ? (params.status as ApplicationStatus)
     : undefined;
 
-  const apps = await listApplications(session!.user.id, {
+  const apps = await listApplications(session.user.id, {
     status,
     company: params.company,
     search: params.search,

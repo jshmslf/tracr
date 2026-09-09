@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getProfile, hasPasswordAccount } from "@/lib/db/queries";
 import { listConnectedDevices } from "@/app/(dashboard)/profile/extension-actions";
@@ -11,8 +12,9 @@ import { Separator } from "@/components/ui/separator";
 
 export default async function ProfilePage() {
   const session = await auth.api.getSession({ headers: await headers() });
-  const profile = await getProfile(session!.user.id);
-  const hasPassword = await hasPasswordAccount(session!.user.id);
+  if (!session) redirect("/login");
+  const profile = await getProfile(session.user.id);
+  const hasPassword = await hasPasswordAccount(session.user.id);
   const devices = await listConnectedDevices();
 
   return (
@@ -21,7 +23,7 @@ export default async function ProfilePage() {
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
         <div className="flex flex-col gap-8">
-          <ProfileForm profile={profile} email={session!.user.email} />
+          <ProfileForm profile={profile} email={session.user.email} />
 
           <Separator />
 
